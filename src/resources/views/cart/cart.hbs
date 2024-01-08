@@ -1,0 +1,130 @@
+<h1 class="mt-16">Giỏ hàng</h1>
+
+<form id="cartForm" method="post" action="/cart/order">
+    {{!-- <input type="hidden" class="form-control" id="name" name="name" value="{{product.name}}"> --}}
+    {{!-- <input type="hidden" class="form-control" id="quantity" name="quantity" value="{{product.quantity}}"> --}}
+    {{!-- <input type="hidden" class="form-control" id="price" name="price" value="{{product.price}}"> --}}
+    {{!-- <input type="hidden" class="form-control" id="cartId" name="cartId" value="{{cart._id}}"> --}}
+    <input type="hidden" class="form-control" id="status" name="status" value="00">
+    <input type="hidden" class="form-control" id="username" name="username" value="an">
+    {{!-- <input type="hidden" class="form-control" id="userId" name="userId" value="{{userId}}">  --}}
+    <input type="hidden" class="form-control" id="total" name="total" value="{{totalOrderAmount cart}}">
+
+{{#if cart.length}}
+<div class="d-flex align-items-left flex-wrap flex-md-nowrap">
+    <div class="mt-4 col-7">
+        {{#each cart}}
+        <div class="cart">
+            <div class="row mt-16">
+                <div class="col col-4 card-img-products-cart">
+                    <img class="card-img-products" src="{{this.image}}" alt="{{this.name}}">
+                </div>
+                <div class="col col-8">
+                    <a href="" class="close-icon" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-cart-modal"><p class="ti-close"></p></a>
+                    <a href="/products/{{this.slug}}">{{this.name}}</a>
+                    <p>{{this.color}}</p>
+                    <p>{{this.size}}</p>
+                    <p>${{this.price}} USD</p>
+                    <p>{{this.quantity}}</p>
+                </div>
+            </div>
+        </div>
+        {{/each}}   
+    </div>
+    <div class="mt-4 col-5">
+        <div class="invoice">
+            <div class="invoice-header">
+                <h2>Tổng mặt hàng: {{cart.length}}</h2>
+            </div>
+            <div class="invoice-body">
+                {{#each cart}}
+                    <h4>{{this.name}}</h4>
+                    <p>Số lượng: {{this.quantity}}</p>
+                    <p>Giá: ${{multiply this.price this.quantity}} USD</p>
+                {{/each}}
+            </div>
+            <div>
+                <h3>Tổng tiền đơn hàng: ${{totalOrderAmount cart}} USD</h3>
+            </div>
+            <div class="invoice-footer mt-20">
+                <button type="submit" class="btn-buy-products">Thanh toán</button>
+                <button class="btn-next-products mt-4"><a href="/">Tiếp tục mua sắm</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
+</form>
+{{#ifCond cart.length 0}}
+<p class="text-center mt-8">Chưa có sản phẩm nào. <a href="/products">Bấm vào đây</a> để tiếp tục mua sắm</p>
+{{/ifCond}}
+
+{{!-- Confirm delete cart --}}
+<div id="delete-cart-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa mặt hàng?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa mặt hàng này khỏi giỏ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        <button id="btn-delete-cart" type="button" class="btn btn-danger">Xóa bỏ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-cart-form" method="POST"></form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var cartId;
+    var deleteForm = document.forms['delete-cart-form'];
+    var btnDeleteCart = document.getElementById('btn-delete-cart');
+
+    // When dialog confirm clicked
+    $('#delete-cart-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); 
+      cartId = button.data('id');   
+    });
+
+    // When delete cart btn clicked
+    btnDeleteCart.onclick = function() {
+      deleteForm.action = '/cart/' + cartId + '?_method=DELETE';
+      deleteForm.submit();
+    }
+  });
+  
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#cartForm').submit(function(event) {
+            event.preventDefault(); 
+            $.ajax({
+                type: 'POST',
+                url: '/cart/order',
+                data: $(this).serialize(),
+                success: function(data) {
+                    console.log(data); 
+                    updateCartUI(data.updatedCart);
+                },
+                error: function(error) {
+                    console.error('Lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        });
+    });
+    function updateCartUI(updatedCart) {
+            $('#cartContainer').html(updatedCart);
+            alert('Thanh toán thành công!');
+        }
+</script>
+

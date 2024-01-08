@@ -1,0 +1,30 @@
+<h1 class="mt-16">Đơn hàng của tôi</h1>
+
+{{#if order.length}}
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Mã đơn hàng</th>
+            <th scope="col">Ngày đặt</th>
+            <th scope="col">Số lượng hàng</th>
+            <th scope="col">Tổng</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each order}}
+        <tr>
+            <td>{{sum @index 1}}</td>
+            <td>{{this._id}}</td>
+            <td>{{this.createdAt}}</td>
+            <td>{{cart.length}}</td>
+            <td>{{this.total}} USD</td>
+            <td><a href="/order/{{this._id}}">Xem chi tiết</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p class="text-center">Bạn chưa mua mặt hàng nào. <a href="/products">Bấm vào đây</a> để mua sắm</p>
+{{/if}}

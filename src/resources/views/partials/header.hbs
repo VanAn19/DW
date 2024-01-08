@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">HOME</a>
+    <a class="navbar-brand" href="#trend">TRENDING</a>
+    <a class="navbar-brand" href="/collection">COLLECTION</a>
+    {{!-- <a class="navbar-brand" href="/products">PRODUCT</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> --}}
+    <li class="navbar-brand dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;">
+          PRODUCTS
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Watches</a>
+          <a class="dropdown-item" href="#">Jewellery</a>
+          <a class="dropdown-item" href="#">Sunglasses</a>
+          <a class="dropdown-item" href="#">Smartwatch</a>
+          <a class="dropdown-item" href="/products">All products</a>
+        </div>
+    </li>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Username
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/admin/create">Thêm sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/admin/stored">Tất cả sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/statistic">Thống kê</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/cart">Giỏ hàng của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/order">Đơn hàng của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/signin">Đăng xuất</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,61 @@
+<div class="mt-4">
+    {{!-- <form method="get" action="/products" id="search-form" onsubmit="updateAction()">
+        <div class="row">
+            <input type="text" class="search-box" id="search-box" placeholder="Search" onkeyup=sendData(this)>
+            <button type="submit"><p class="ti-search text-center"></p></button>
+        </div>
+    </form> --}}
+    <form method="get" action="/products" id="search-form" onsubmit="updateAction()">
+        <div class="row search-container">
+            <input type="text" name="searchValue" class="search-box" id="search-box" placeholder="Search" onkeyup="sendData(this)">
+            <button type="submit"><p class="ti-search text-center"></p></button>
+        </div>
+    </form>
+    <h2 id="new" class="section-heading mt-16">ALL PRODUCTS</h2>
+    <div class="row">
+        {{#each products}}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-product-item">
+                <a href="/products/{{this.slug}}">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="/products/{{this.slug}}">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">${{this.price}} USD</p>
+                    <p class="card-text">{{this.type}}</p>
+                </div>
+            </div>
+        </div>  
+        {{/each}}
+    </div>  
+    <nav aria-label="Page navigation example" class="mt-16">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{#unless previousPage}}disabled{{/unless}}">
+                <a class="page-link" href="?page={{previousPage}}" tabindex="-1">&laquo;</a>
+            </li>
+            {{#each pages}}
+                <li class="page-item {{#ifCond this ../currentPage}}active{{else}}{{/ifCond}}">
+                    <a class="page-link" href="?page={{this}}">{{this}}</a>
+                </li>
+            {{/each}}
+            <li class="page-item {{#ifCond totalPages currentPage}}disabled{{/ifCond}}">
+                <a class="page-link" href="?page={{nextPage}}" tabindex="1">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script>
+    function updateAction() {
+        const searchBox = document.getElementById('search-box');
+        const searchValue = searchBox.value.trim();
+
+        if (searchValue !== '') {
+            document.getElementById('search-form').action = `/products?searchValue=${encodeURIComponent(searchValue)}`;
+        } else {
+            document.getElementById('search-form').action = '/products';
+        }
+    }
+</script>

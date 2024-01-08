@@ -1,0 +1,158 @@
+<div class="mt-4">
+    <div>
+      <h3>Tất cả sản phẩm</h3>
+      {{#if deletedCount}}
+      <a href="/admin/trash">Thùng rác ({{deletedCount}})</a>
+      {{/if}}
+    </div>
+    <div class="row mt-4">
+      <div class="col col-third search-products-type">
+        <form method="get" action="/admin/stored/{{value}}">
+        Theo: 
+            <select name="type" id="type" class="products-type">
+                <option value="">All</option>
+                <option value="Watches">Watches</option>
+                <option value="Jewellery">Jewellery</option>
+                <option value="Sunglasses">Sunglasses</option>
+                <option value="Smartwatch">Smartwatch</option>
+            </select>
+            <button type="submit">Tìm</button>
+        </form>
+      </div>
+      <div class="col col-two-third search-products">
+        <form method="get" action="/admin/stored/" id="search-form" onsubmit="updateAction()">
+          <div class="row">
+              <input type="text" class="search-box" id="search-box" placeholder="Search" onkeyup=sendData(this)>
+              <button type="submit"><p class="ti-search text-center"></p></button>
+          </div>
+        </form>
+        <section id="searchResults">
+
+        </section>
+      </div>
+    </div>
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Loại</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Ngày tạo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.type}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a href="/admin/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+                    <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-product-modal">Xóa</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+              <td colspan="5" class="text-center">
+                Bạn chưa nhập sản phẩm nào.
+                <a href="/admin/create">Nhập sản phẩm</a>
+              </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+{{!-- Confirm delete course --}}
+<div id="delete-product-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa sản phẩm?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa sản phẩm này?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        <button id="btn-delete-product" type="button" class="btn btn-danger">Xóa bỏ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-product-form" method="POST"></form>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var productId;
+    var deleteForm = document.forms['delete-product-form'];
+    var btnDeleteProduct = document.getElementById('btn-delete-product');
+
+    // When dialog confirm clicked
+    $('#delete-product-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); 
+      productId = button.data('id');   
+    });
+
+    // When delete product btn clicked
+    btnDeleteProduct.onclick = function() {
+      deleteForm.action = '/admin/' + productId + '?_method=DELETE';
+      deleteForm.submit();
+    }
+  });
+  
+</script>
+
+{{!-- live data search --}}
+<script>
+  function sendData(e) {
+    const searchResults = document.getElementById('searchResults');
+    let match = e.value.match(/^[a-zA-Z ]*/);
+    let match2 = e.value.match(/\s*/);
+    if (match2[0] === e.value) {
+      searchResults.innerHTML = '';
+      return;
+    }
+    if (match[0] === e.value) {
+      fetch('getProducts', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({payload: e.value})
+      }).then(res => res.json()).then(data => {
+        let payload = data.payload;
+        searchResults.innerHTML = '';
+        if (payload.length < 1) {
+          searchResults.innerHTML = '<p>Không có sản phẩm tìm kiếm.</p>';
+          return;
+        }
+        payload.forEach((item, index) => {
+          if (index > 0) searchResults.innerHTML += '<hr>';
+          searchResults.innerHTML += `<p>${item.name}</p>`;
+        });
+      });
+      return;
+    }
+    searchResults.innerHTML = '';
+  }
+</script>
+
+
+<script>
+  function updateAction() {
+    const searchBox = document.getElementById('search-box');
+    const searchValue = searchBox.value.trim();
+
+    document.getElementById('search-form').action = `/admin/stored/${searchValue}`;
+}
+</script>

@@ -1,0 +1,109 @@
+<div id="slider">
+            <div class="banner"></div>
+            <div class="col text-content">
+                    <h2 class="text-banner mb-8">LOOK BACK FOR SOMETHING NEW</h2>
+                    <p class="text-description mb-16">It’s waiting through the screen.</p>
+                    <a href="">Read the full story behind AW23</a>
+                
+            </div>
+            <div class="row text-heading">
+                <p class="col col-third text-center"><i class="icon-head ti-truck"></i>Free Shipping Available</p>
+                <p class="col col-third text-center"><i class="icon-head ti-dropbox"></i>Free Returns</p>
+                <p class="col col-third text-center"><i class="icon-head ti-timer"></i>Two Year Warranty</p>
+            </div>
+        </div>
+
+<div class="mt-4">
+    {{!-- trend products --}}
+    <h2 id="trend" class="section-heading mt-64">TRENDING</h2>
+    <div class="row">
+        {{#each products}}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-product-item">
+                <a href="/products/{{this.slug}}">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="/products/{{this.slug}}">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">${{this.price}} USD</p>
+                    <p class="card-text">{{this.type}}</p>
+                    {{#ifCond this.quantity 0}}
+                    <p><i class="fa-solid fa-circle fa-2xs"></i> Out of stock</p>
+                    {{else}}
+                    <p><i class="fa-solid fa-circle fa-beat-fade fa-2xs" style="color: #3ce000;"></i></i> In stock</p>
+                    {{/ifCond}}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>  
+    {{!-- <div class="text-center">
+        {{#each pages}}
+            <a href="?page={{this}}">{{this}}</a>   
+        {{/each}}
+    </div> --}}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
+            <li class="page-item {{#unless previousPage}}disabled{{/unless}}">
+                <a class="page-link" href="?page={{previousPage}}" tabindex="-1">&laquo;</a>
+            </li>
+            <li class="page-item {{#ifCond 2 currentPage}}disabled{{/ifCond}}">
+                <a class="page-link" href="?page={{nextPage}}" tabindex="1">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    {{!-- collection section --}}
+    <div id="collection" class="content-section mt-64">
+        <div class="row collection-content">
+            <div class="col s-col-full mt-32 collection-text">
+                <h3>SHOP THE AW23 COLLECTION</h3>
+                <p class="mt-16">From reimagined icons to entirely fresh categories, there’s plenty of new new new happening here this season.</p>
+            </div>
+            <div class="col s-col-full collection-button">
+                <button class="collection-shop-btn btn mt-32">
+                    <a href="/collection">SHOP NOW</a>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- hightlights section -->
+    <div id="highlights" class="content-section mt-64">
+        <div class="row highlights-list">
+            <div class="col col-third s-col-full mt-32 text-center">
+                <img src="../img/product/highlight1.jpg" alt="Highlight" class="highlight-img">
+                <button class="highlight-btn btn"><a href="/products/quadro-pressed-melrose">LOOKS FOR HER</a></button>
+            </div>
+            <div class="col col-third s-col-full mt-32 text-center">
+                <img src="../img/product/highlight2.jpg" alt="Highlight" class="highlight-img">
+                <button class="highlight-btn btn"><a href="/products/petite-amber">LOOKS FOR HIM</a></button>
+            </div>
+            <div class="col col-third s-col-full mt-32 text-center">
+                <img src="../img/product/highlight3.jpg" alt="Highlight" class="highlight-img">
+                <button class="highlight-btn btn"><a href="/jewelleries">JEWELRY</a></button>
+            </div>
+        </div>
+    </div>
+    <!-- feedbacks section -->
+    <div id="feedbacks" class="content-section mt-64">
+        <div class="feedback-text">
+            <h2>#DANIELWELLINGTON</h2>
+            <p>Get inspired by our community</p>
+        </div>
+        <div class="row feedbacks-list">
+            <div class="col col-four s-col-full mt-32 text-center">
+            <img src="../img/product/feedback1.jpg" alt="Feedback" class="feedback-img">
+        </div>
+        <div class="col col-four s-col-full mt-32 text-center">
+            <img src="../img/product/feedback2.jpg" alt="Feedback" class="feedback-img">
+        </div>
+            <div class="col col-four s-col-full mt-32 text-center">
+            <img src="../img/product/feedback3.jpg" alt="Feedback" class="feedback-img">
+        </div>
+        <div class="col col-four s-col-full mt-32 text-center">
+            <img src="../img/product/feedback4.jpg" alt="Feedback" class="feedback-img">
+        </div>
+    </div>
+</div>

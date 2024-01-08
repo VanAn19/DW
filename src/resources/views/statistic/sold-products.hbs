@@ -1,0 +1,49 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body data-jsondata="{{jsonData}}"> 
+    <h1 class="mt-16">Thống kê số lượng bán được</h1>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Số lượng bán được</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each soldProducts}}
+            <tr>
+                <td>{{sum @index 1}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.soldQuantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+    <p class="mt-4" style="font-size: 12px; margin-left: 150px;">Biểu đồ thống kê số lượng bán</p>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var jsonData = JSON.parse(document.body.getAttribute('data-jsondata'));
+        var ctx = document.getElementById('pieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+            labels: jsonData.labels,
+            datasets: [{
+                data: jsonData.data,
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+                ],
+            }],
+            },
+        });
+    });
+</script>

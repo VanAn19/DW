@@ -1,0 +1,54 @@
+<div class="bill mt-16">
+    <div class="bill-header">
+        <h1>HÓA ĐƠN</h1>
+    </div>
+    {{#each user}}
+    <div class="bill-body mt-4">
+        <p><strong>Khách hàng:</strong> {{this.name}}</p>
+        <p><strong>Địa chỉ:</strong> {{this.address}}</p>
+        <p><strong>Số điện thoại:</strong> {{this.phone}}</p>
+    </div>
+    {{/each}}
+    <h2>Chi tiết hóa đơn</h2>
+    <div class="bill-items">
+        {{#each cart}}
+            <div class="row">
+                <div class="col col-3 bill-img">
+                    <img src="{{this.image}}" alt="{{this.name}}">
+                </div>
+                <div class="col col-9 bill-details">
+                    <h5><a href="/products/{{this.slug}}">{{this.name}}</a></h5>
+                    <p>{{this.color}}, {{this.size}}</p>
+                    <div class="row">
+                        <p>${{this.price}} USD</p>
+                        <p style="float: right;">x{{this.quantity}}</p>
+                    </div>
+                    <p style="float: right;">${{multiply this.quantity this.price}} USD</p>
+                </div>
+            </div>
+        {{/each}}
+        <hr>    
+    </div>
+    <div class="bill-footer">
+        <div class="row">
+            <p class="col col-half"><strong style="float: left; margin-left: 5px;">Tổng cộng: {{totalOrderAmount cart}} USD</strong></p>
+            {{#each order}}
+                {{#ifCond this.status "00"}}
+                <div class="col col-half">
+                    <form method="post" action="/order/buy/{{../this._id}}">
+                        <input type="hidden" class="form-control" id="status" name="status" value="01">
+                        <button class="pay-btn" style="float: right;" type="submit">Thanh toán</button>
+                        {{!-- <p>{{../this._id}}</p> --}}
+                    </form>
+                </div>
+                {{/ifCond}}
+                {{#ifCond this.status "01"}}
+                <div class="col col-half">
+                    <button class="paid-btn" disabled style="float: right;">Đã thanh toán</button>
+                </div>
+                {{/ifCond}}
+            {{/each}}
+            
+        </div>
+    </div>
+</div>
